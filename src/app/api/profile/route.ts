@@ -20,9 +20,9 @@ export const GET = async (req: Request) => {
 
 
       const payload: ActionGetResponse = {
-          icon: "user.avatar_url",
-          label: `Donate 0.1 SOL to ${user}`,
-          description: `${user} has 10 contribution on github in last week`,
+          icon: "https://lh3.googleusercontent.com/L6zpv_9BKC6IyG1ZAUJ9WxQUDgXHpVU4y6i6F5_Qa5GC85KzFGsAPtKjRQny-BynM6-8HJMSUrF8ARd0gxs9nbJDV8gZPyKo0ATh",
+          label: `send 0.1 SOL to ${user}`,
+          description: `${user} has requested a payment from you.`,
           title: `send 0.1 SOL to ${user}`,
       }
 
