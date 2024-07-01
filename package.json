@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@bonfida/spl-name-service": "^2.5.4",
+    "@prisma/client": "^5.16.1",
     "@solana/actions": "^1.0.2",
     "@solana/web3.js": "^1.93.1",
     "axios": "^1.7.2",
