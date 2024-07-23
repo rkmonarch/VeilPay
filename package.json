@@ -10,11 +10,14 @@
   },
   "dependencies": {
     "@bonfida/spl-name-service": "^2.5.4",
+    "@pinata/sdk": "^2.1.0",
     "@prisma/client": "^5.16.1",
     "@solana/actions": "^1.0.2",
+    "@solana/spl-token": "^0.4.8",
     "@solana/web3.js": "^1.93.1",
     "axios": "^1.7.2",
     "next": "14.2.4",
+    "prisma": "5.16.1",
     "react": "^18",
     "react-dom": "^18"
   },
