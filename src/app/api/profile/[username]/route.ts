@@ -37,11 +37,8 @@ export const GET = async (
     });
   } else {
     const tokenData = await getToken(user.tokenAddress);
-    console.log(url.href);
-
     const tokenPrice = tokenData.price;
 
-    // Calculate the token amount and round to the nearest whole number
     const calculateTokenAmount = (usdAmount: number) =>
       Math.round(usdAmount / tokenPrice);
 
@@ -170,8 +167,6 @@ export async function POST(
         new PublicKey(account)
       );
 
-      console.log("senderMintAccount", senderMintAccount.toBase58());
-
       const receiverMintAccount = await getAssociatedTokenAddress(
         new PublicKey(user.tokenAddress),
         new PublicKey(user.address)
@@ -189,26 +184,7 @@ export async function POST(
         );
       }
 
-      console.log("receiverMintAccount", receiverMintAccount.toBase58());
-
-      const tx = new Transaction();
-
-      const latestBlockhash = await connection.getLatestBlockhash();
-
-      tx!.recentBlockhash = latestBlockhash.blockhash;
-      tx!.lastValidBlockHeight = latestBlockhash.lastValidBlockHeight;
-      console.log(
-        "transfer instruction",
-        createTransferInstruction(
-          new PublicKey(senderMintAccount),
-          new PublicKey(receiverMintAccount),
-          new PublicKey(account),
-          amount
-        )
-      );
-      tx.feePayer = account;
-
-      tx.add(
+      const transaction = new Transaction().add(
         createTransferInstruction(
           new PublicKey(senderMintAccount),
           new PublicKey(receiverMintAccount),
@@ -217,17 +193,24 @@ export async function POST(
         )
       );
 
-      console.log("tx", Buffer.from(tx.serialize()).toString("base64"));
+      transaction.feePayer = new PublicKey(account);
+      transaction.recentBlockhash = (
+        await connection.getLatestBlockhash()
+      ).blockhash;
+      transaction!.lastValidBlockHeight = (
+        await connection.getLatestBlockhash()
+      ).lastValidBlockHeight;
 
-      return new Response(
-        JSON.stringify({
-          transaction: tx.serialize(),
+      const payload: ActionPostResponse = await createPostResponse({
+        fields: {
+          transaction: transaction,
           message: `Thanks for support ${user.username}`,
-        }),
-        {
-          headers: ACTIONS_CORS_HEADERS,
-        }
-      );
+        },
+      });
+
+      return new Response(JSON.stringify(payload), {
+        headers: ACTIONS_CORS_HEADERS,
+      });
     }
   } catch (error) {
     console.error("Error fetching tx:", error);
