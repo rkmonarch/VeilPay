@@ -43,7 +43,7 @@ export const GET = async (
       icon: "https://onlyblinks.com/blink.jpg",
       description: `${request.description}`,
       title: `${request.username} has requested ${request.amount} ${tokenData.symbol} from you`,
-      label: "Send",
+      label: `Send ${tokenData.symbol}`,
     };
 
     return new Response(JSON.stringify(payload), {

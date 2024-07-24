@@ -44,9 +44,10 @@ export const GET = async (
 
     const payload: ActionGetResponse = {
       icon: "https://onlyblinks.com/blink.jpg",
-      description: `Send ${tokenData.symbol} coin to ${user.username}`,
-      title: `Send it`,
-      label: "Send",
+      description: `Support ${user.username} with a ${tokenData.symbol} Coin Donation!
+Join the cause and show your support by sending ${tokenData.symbol} coins to ${user.username}. Every coin counts and helps ${user.username} continue their journey.`,
+      title: `Support ${user.username} with ${tokenData.symbol} Coins`,
+      label: `Send ${tokenData.symbol}`,
       links: {
         actions: [
           {
