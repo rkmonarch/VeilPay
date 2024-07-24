@@ -5,7 +5,7 @@ export async function getToken(tokenAddress: string) {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": process.env.NEXT_PUBLIC_SHYFT_API_KEY as string,
+        "x-api-key": process.env.SHYFT_API_KEY as string,
       },
     }
   );
@@ -34,7 +34,7 @@ async function getTokenPrice(address: string) {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "X-API-KEY": process.env.NEXT_PUBLIC_BIRDEYE_API_KEY as string,
+          "X-API-KEY": process.env.BIRDEYE_API_KEY as string,
         },
       }
     );

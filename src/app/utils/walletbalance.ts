@@ -5,7 +5,7 @@ export async function getWalletBalance(address: string) {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": process.env.NEXT_PUBLIC_SHYFT_API_KEY as string,
+        "x-api-key": process.env.SHYFT_API_KEY as string,
       },
     }
   );
