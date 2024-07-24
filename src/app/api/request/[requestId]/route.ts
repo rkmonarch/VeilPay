@@ -40,7 +40,7 @@ export const GET = async (
   } else {
     const tokenData = await getToken(request.tokenAddress);
     const payload: ActionGetResponse = {
-      icon: "https://veilpay.xyz/veilpay.jpg",
+      icon: "https://www.veilpay.xyz/veilpay.jpg",
       description: `${request.description}`,
       title: `${request.username} has requested ${request.amount} ${tokenData.symbol} from you`,
       label: `Send ${tokenData.symbol}`,
