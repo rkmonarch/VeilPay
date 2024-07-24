@@ -12,7 +12,6 @@ export async function getToken(tokenAddress: string) {
 
   const tokenPrice = await getTokenPrice(tokenAddress);
 
-  console.log("tokenPrice", tokenPrice);
   const token = await response.json();
 
   let tokenInfo = {

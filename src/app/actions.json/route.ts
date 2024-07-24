@@ -6,7 +6,11 @@ export const GET = async () => {
       // map all root level routes to an action
       {
         pathPattern: "/*",
-        apiPath: "/api/actions/*",
+        apiPath: "/api/profile/*",
+      },
+      {
+        pathPattern: "/request/*",
+        apiPath: "/api/request/*",
       },
     ],
   };
