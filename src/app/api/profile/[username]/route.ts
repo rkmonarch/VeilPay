@@ -43,7 +43,7 @@ export const GET = async (
       Math.round(usdAmount / tokenPrice);
 
     const payload: ActionGetResponse = {
-      icon: "https://onlyblinks.com/blink.jpg",
+      icon: "https://veilpay.xyz/veilpay.jpg",
       description: `Support ${user.username} with a ${tokenData.symbol} Coin Donation!
 Join the cause and show your support by sending ${tokenData.symbol} coins to ${user.username}. Every coin counts and helps ${user.username} continue their journey.`,
       title: `Support ${user.username} with ${tokenData.symbol} Coins`,
