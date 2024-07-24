@@ -68,12 +68,12 @@ export const GET = async (
             )}`,
           },
           {
-            href: "/swap/SOL-Bonk/{amount}",
-            label: "Buy Bonk",
+            href: `${url.origin}${url.pathname}?amount={amount}`,
+            label: `send ${tokenData.symbol}`,
             parameters: [
               {
                 name: "amount",
-                label: "Enter a custom USD amount",
+                label: "Enter a custom amount",
               },
             ],
           },
