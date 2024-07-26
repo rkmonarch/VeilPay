@@ -10,15 +10,26 @@
   },
   "dependencies": {
     "@bonfida/spl-name-service": "^2.5.4",
+    "@jup-ag/wallet-adapter": "^0.2.0",
     "@pinata/sdk": "^2.1.0",
     "@prisma/client": "^5.17.0",
+    "@radix-ui/react-avatar": "^1.1.0",
+    "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-select": "^2.1.1",
+    "@radix-ui/react-slot": "^1.1.0",
     "@solana/actions": "^1.0.2",
     "@solana/spl-token": "^0.4.8",
     "@solana/web3.js": "^1.93.1",
     "axios": "^1.7.2",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.3.17",
+    "lucide-react": "^0.416.0",
     "next": "14.2.4",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "tailwind-merge": "^2.4.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -28,7 +39,7 @@
     "eslint-config-next": "14.2.4",
     "postcss": "^8",
     "prisma": "5.17.0",
-    "tailwindcss": "^3.4.1",
+    "tailwindcss": "^3.4.7",
     "typescript": "^5"
   }
 }
