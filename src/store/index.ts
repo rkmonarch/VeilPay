@@ -13,6 +13,13 @@ interface IProfileStore {
     setProfile: (profile: Profile) => void;
 }
 
+interface IRequestStore {
+    amount: string;
+    message: string;
+    setAmount: (amount: string) => void;
+    setMessage: (message: string) => void
+}
+
 const useTokenStore = create<ITokenStore>((set) => ({
     tokens: null,
     selectedToken: null,
@@ -34,4 +41,17 @@ const useProfileStore = create<IProfileStore>((set) => ({
         }),
 }));
 
-export { useTokenStore, useProfileStore };
+const useRequestStore = create<IRequestStore>((set) => ({
+    amount: "",
+    message: "",
+    setAmount: (amount) =>
+        set({
+            amount: amount,
+        }),
+    setMessage: (message) =>
+        set({
+            message: message,
+        }),
+}));
+
+export { useTokenStore, useProfileStore, useRequestStore };

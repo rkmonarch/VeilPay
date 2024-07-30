@@ -20,10 +20,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
     );
   }
 
+  console.log(amount, tokenAddress, address, description, username)
+
   try {
     const request = await prisma.request.create({
       data: {
-        amount,
+        amount: parseFloat(amount),
         tokenAddress,
         address,
         description,

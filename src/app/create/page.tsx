@@ -15,15 +15,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useProfileStore, useTokenStore } from "@/store";
 import { useWallet } from "@jup-ag/wallet-adapter";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import createProfile from "../utils/createProfile";
-import getJupTokens from "../utils/geJupTokens";
 
 export default function Create() {
   const { publicKey } = useWallet();
   const { profile } = useProfileStore();
   const [username, setUsername] = useState(profile?.username);
-  const { selectedToken, setTokens } = useTokenStore();
+  const { selectedToken } = useTokenStore();
   const [isLoading, setIsLoading] = useState(false);
 
   async function createUser() {
@@ -43,19 +42,6 @@ export default function Create() {
       setIsLoading(false);
     }
   }
-
-  async function handleTokens() {
-    try {
-      const tokens = await getJupTokens();
-      setTokens(tokens);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  useEffect(() => {
-    handleTokens();
-  }, []);
 
   return (
     <section className="flex items-center justify-center min-h-[calc(100vh-72px)]">

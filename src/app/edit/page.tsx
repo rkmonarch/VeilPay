@@ -15,8 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useProfileStore, useTokenStore } from "@/store";
 import { useWallet } from "@jup-ag/wallet-adapter";
-import { useEffect, useState } from "react";
-import getJupTokens from "../utils/geJupTokens";
+import { useState } from "react";
 import updateProfile from "../utils/updateProfile";
 
 export default function Edit() {
@@ -43,19 +42,6 @@ export default function Edit() {
       setIsLoading(false);
     }
   }
-
-  async function handleTokens() {
-    try {
-      const tokens = await getJupTokens();
-      setTokens(tokens);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  useEffect(() => {
-    handleTokens();
-  }, []);
 
   return (
     <section className="flex items-center justify-center min-h-[calc(100vh-72px)]">
