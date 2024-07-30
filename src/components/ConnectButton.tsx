@@ -26,6 +26,10 @@ export default function ConnectButton() {
         method: "GET",
       });
       const data = await res.json();
+      if (data?.error) {
+        router.push("/create");
+        return;
+      }
       setProfile(data);
     } catch (error) {
       console.log(error);

@@ -16,22 +16,22 @@ import { Label } from "@/components/ui/label";
 import { useProfileStore, useTokenStore } from "@/store";
 import { useWallet } from "@jup-ag/wallet-adapter";
 import { useEffect, useState } from "react";
+import createProfile from "../utils/createProfile";
 import getJupTokens from "../utils/geJupTokens";
-import updateProfile from "../utils/updateProfile";
 
-export default function Edit() {
+export default function Create() {
   const { publicKey } = useWallet();
   const { profile } = useProfileStore();
   const [username, setUsername] = useState(profile?.username);
   const { selectedToken, setTokens } = useTokenStore();
   const [isLoading, setIsLoading] = useState(false);
 
-  async function editUser() {
+  async function createUser() {
     try {
       setIsLoading(true);
       if (!publicKey || !selectedToken || !username || username?.length < 3)
         return;
-      const profile = await updateProfile({
+      const profile = await createProfile({
         address: publicKey.toBase58(),
         tokenAddress: selectedToken?.address,
         username: username,
@@ -61,8 +61,10 @@ export default function Edit() {
     <section className="flex items-center justify-center min-h-[calc(100vh-72px)]">
       <Card className="w-[400px]">
         <CardHeader>
-          <CardTitle>Edit profile</CardTitle>
-          <CardDescription>Edit your profile in one-click.</CardDescription>
+          <CardTitle>Create profile</CardTitle>
+          <CardDescription>
+            Create your new profile in one-click.
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-center my-4">
@@ -93,7 +95,7 @@ export default function Edit() {
           </form>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <Button className="w-full" onClick={editUser}>
+          <Button className="w-full" onClick={createUser}>
             Submit
           </Button>
         </CardFooter>
