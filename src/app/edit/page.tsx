@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 import getJupTokens from "../utils/geJupTokens";
 import createProfile from "../utils/createProfile";
 
-export default function Create() {
+export default function Edit() {
   const { publicKey } = useWallet();
   const { profile } = useProfileStore();
   const [username, setUsername] = useState(profile?.username);
@@ -61,10 +61,8 @@ export default function Create() {
     <section className="flex items-center justify-center min-h-[calc(100vh-72px)]">
       <Card className="w-[400px]">
         <CardHeader>
-          <CardTitle>Create profile</CardTitle>
-          <CardDescription>
-            Create your new profile in one-click.
-          </CardDescription>
+          <CardTitle>Edit profile</CardTitle>
+          <CardDescription>Edit your profile in one-click.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-center my-4">

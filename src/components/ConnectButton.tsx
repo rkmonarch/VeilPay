@@ -57,7 +57,7 @@ export default function ConnectButton() {
           <DropdownMenuItem
             className="cursor-pointer"
             onClick={() => {
-              router.push("/create");
+              router.push("/edit");
             }}
           >
             Edit profile
