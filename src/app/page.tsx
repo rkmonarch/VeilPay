@@ -1,9 +1,8 @@
-import ConnectButton from "@/components/ConnectButton";
 import OrbitingCircles from "@/components/magicui/orbiting-circles";
 
 export default function Home() {
   return (
-    <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden">
+    <div className="relative flex min-h-[calc(100vh-72px)] w-full flex-col items-center justify-center overflow-hidden">
       <div className="flex flex-col">
         <span className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300 bg-clip-text text-center text-8xl font-semibold leading-none text-transparent dark:from-white dark:to-black">
           VEILPAY
@@ -25,7 +24,6 @@ export default function Home() {
       >
         <Icons.notion />
       </OrbitingCircles>
-      {/* Outer Circles (reverse) */}
       <OrbitingCircles
         className="size-[50px] border-none bg-transparent"
         radius={220}

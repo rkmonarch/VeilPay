@@ -1,5 +1,6 @@
 "use client";
 
+import TokenModal from "@/components/modals/TokenModal";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,32 +13,53 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useProfileStore, useTokenStore } from "@/store";
 import { useWallet } from "@jup-ag/wallet-adapter";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import getJupTokens from "../utils/geJupTokens";
+import createProfile from "../utils/createProfile";
 
 export default function Create() {
   const { publicKey } = useWallet();
-  const [username, setUsername] = useState("");
+  const { profile } = useProfileStore();
+  const [username, setUsername] = useState(profile?.username);
+  const { selectedToken, setTokens } = useTokenStore();
+  const [isLoading, setIsLoading] = useState(false);
 
   async function createUser() {
     try {
-      const res = await fetch("/api/create", {
-        method: "POST",
-        body: JSON.stringify({
-          address: publicKey,
-          username: username,
-          avatar: "",
-          tokenAddress: "",
-        }),
+      setIsLoading(true);
+      if (!publicKey || !selectedToken || !username || username?.length < 3)
+        return;
+      const profile = await createProfile({
+        address: publicKey.toBase58(),
+        tokenAddress: selectedToken?.address,
+        username: username,
       });
-      const data = await res.json();
-      console.log(data);
-    } catch (error) {}
+      console.log(profile);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
+  async function handleTokens() {
+    try {
+      const tokens = await getJupTokens();
+      setTokens(tokens);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    handleTokens();
+  }, []);
+
   return (
-    <section className="flex items-center justify-center min-h-screen">
-      <Card className="w-[350px]">
+    <section className="flex items-center justify-center min-h-[calc(100vh-72px)]">
+      <Card className="w-[400px]">
         <CardHeader>
           <CardTitle>Create profile</CardTitle>
           <CardDescription>
@@ -45,10 +67,14 @@ export default function Create() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center justify-center mb-4">
-            <Avatar className="size-16">
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>CN</AvatarFallback>
+          <div className="flex items-center justify-center my-4">
+            <Avatar className="size-24">
+              <AvatarImage
+                src={`https://source.boringavatars.com/beam/120/${username}`}
+              />
+              <AvatarFallback>
+                {username?.substring(0, 2).toUpperCase()}
+              </AvatarFallback>
             </Avatar>
           </div>
           <form>
@@ -57,17 +83,21 @@ export default function Create() {
                 <Label htmlFor="name">Username</Label>
                 <Input
                   id="name"
+                  defaultValue={profile?.username}
                   placeholder="Enter your username"
                   onChange={(e) => {
                     setUsername(e.target.value);
                   }}
                 />
               </div>
+              <TokenModal />
             </div>
           </form>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <Button className="w-full">Submit</Button>
+          <Button className="w-full" onClick={createUser}>
+            Submit
+          </Button>
         </CardFooter>
       </Card>
     </section>

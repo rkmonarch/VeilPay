@@ -2,13 +2,14 @@
 
 import { UnifiedWalletProvider } from "@jup-ag/wallet-adapter";
 import React from "react";
+import Navbar from "./Navbar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <UnifiedWalletProvider
       wallets={[]}
       config={{
-        autoConnect: false,
+        autoConnect: true,
         env: "mainnet-beta",
         metadata: {
           name: "UnifiedWallet",
@@ -21,6 +22,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         },
       }}
     >
+      <Navbar />
       {children}
     </UnifiedWalletProvider>
   );
