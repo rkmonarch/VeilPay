@@ -78,6 +78,7 @@ function TokenModal() {
               filteredTokens.map((token) => (
                 <div
                   className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded-lg cursor-pointer"
+                  key={token.address}
                   onClick={() => {
                     setSelectedToken(token);
                     setIsOpen(false);
