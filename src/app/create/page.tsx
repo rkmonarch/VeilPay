@@ -17,6 +17,7 @@ import { useProfileStore, useTokenStore } from "@/store";
 import { useWallet } from "@jup-ag/wallet-adapter";
 import { useState } from "react";
 import createProfile from "../utils/createProfile";
+import Spinner from "@/components/Spinner";
 
 export default function Create() {
   const { publicKey } = useWallet();
@@ -35,7 +36,6 @@ export default function Create() {
         tokenAddress: selectedToken?.address,
         username: username,
       });
-      console.log(profile);
     } catch (error) {
       console.log(error);
     } finally {
@@ -82,7 +82,7 @@ export default function Create() {
         </CardContent>
         <CardFooter className="flex justify-between">
           <Button className="w-full" onClick={createUser}>
-            Submit
+            {isLoading ? <Spinner /> : "Submit"}
           </Button>
         </CardFooter>
       </Card>

@@ -1,6 +1,7 @@
 "use client";
 
 import createRequest from "@/app/utils/createRequest";
+import Spinner from "@/components/Spinner";
 import TokenModal from "@/components/modals/TokenModal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,13 +9,14 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useProfileStore, useRequestStore, useTokenStore } from "@/store";
 import { useWallet } from "@jup-ag/wallet-adapter";
-import React from "react";
+import React, { useState } from "react";
 
 export default function Create() {
   const { publicKey } = useWallet();
   const { selectedToken } = useTokenStore();
   const { profile } = useProfileStore();
   const { setAmount, setMessage, amount, message } = useRequestStore();
+  const [isLoading, setIsLoading] = useState(false);
 
   async function handleRequest() {
     try {
@@ -26,6 +28,7 @@ export default function Create() {
         amount.length === 0
       )
         return;
+      setIsLoading(true);
       const request = await createRequest({
         address: publicKey?.toBase58(),
         amount: amount,
@@ -35,6 +38,8 @@ export default function Create() {
       });
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -162,7 +167,7 @@ export default function Create() {
                 }
                 onClick={handleRequest}
               >
-                Create
+                {isLoading ? <Spinner /> : "Create"}
               </Button>
             </form>
           </div>
