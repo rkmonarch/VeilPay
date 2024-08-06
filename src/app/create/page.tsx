@@ -18,6 +18,7 @@ import { useWallet } from "@jup-ag/wallet-adapter";
 import { useState } from "react";
 import createProfile from "../utils/createProfile";
 import Spinner from "@/components/Spinner";
+import { toast } from "react-toastify";
 
 export default function Create() {
   const { publicKey } = useWallet();
@@ -25,6 +26,7 @@ export default function Create() {
   const [username, setUsername] = useState(profile?.username);
   const { selectedToken } = useTokenStore();
   const [isLoading, setIsLoading] = useState(false);
+  const [avatar, setAvatar] = useState(profile?.avatar);
 
   async function createUser() {
     try {
@@ -33,11 +35,15 @@ export default function Create() {
         return;
       const profile = await createProfile({
         address: publicKey.toBase58(),
-        tokenAddress: selectedToken?.address,
+        token: selectedToken,
         username: username,
+        avatar: `https://api.dicebear.com/9.x/lorelei/png?seed=${[
+          publicKey?.toBase58(),
+        ]}&flip=true`,
       });
     } catch (error) {
-      console.log(error);
+      console.log("error");
+      toast.error("Failed to create profile, try using a different username");
     } finally {
       setIsLoading(false);
     }
@@ -56,7 +62,9 @@ export default function Create() {
           <div className="flex items-center justify-center my-4">
             <Avatar className="size-24">
               <AvatarImage
-                src={`https://source.boringavatars.com/beam/120/${username}`}
+                src={`https://api.dicebear.com/9.x/lorelei/png?seed=${[
+                  publicKey?.toBase58(),
+                ]}&flip=true`}
               />
               <AvatarFallback>
                 {username?.substring(0, 2).toUpperCase()}

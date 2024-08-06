@@ -14,7 +14,7 @@ import { ChevronDownIcon } from "@radix-ui/react-icons";
 import React, { useEffect, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-function TokenModal() {
+function EditTokenModal() {
   const [isOpen, setIsOpen] = useState(false);
   const { profile } = useProfileStore();
   const { tokens, selectedToken, setSelectedToken } = useTokenStore();
@@ -46,19 +46,13 @@ function TokenModal() {
           variant={"outline"}
           className="flex items-center justify-between"
         >
-          {selectedToken || profile?.token ? (
+          {profile?.token ? (
             <div className="flex items-center gap-2">
               <Avatar className="w-6 h-6">
-                <AvatarImage
-                  src={selectedToken?.logoURI || profile?.token.logoURI}
-                />
-                <AvatarFallback>
-                  {selectedToken?.name || profile?.token.name}
-                </AvatarFallback>
+                <AvatarImage src={profile.token.logoURI} />
+                <AvatarFallback>{profile.token.name}</AvatarFallback>
               </Avatar>
-              <p className="font-semibold text-sm">
-                {selectedToken?.name || profile?.token.name}
-              </p>
+              <p className="font-semibold text-sm">{profile.token.name}</p>
             </div>
           ) : (
             <p>Select Token</p>
@@ -69,10 +63,6 @@ function TokenModal() {
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Select Token</DialogTitle>
-          {/* <DialogDescription>
-          Make changes to your profile here. Click save when
-          you're done.
-        </DialogDescription> */}
         </DialogHeader>
         <div>
           <Input
@@ -105,4 +95,4 @@ function TokenModal() {
   );
 }
 
-export default React.memo(TokenModal);
+export default React.memo(EditTokenModal);

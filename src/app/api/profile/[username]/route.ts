@@ -36,7 +36,7 @@ export const GET = async (
       headers: ACTIONS_CORS_HEADERS,
     });
   } else {
-    const tokenData = await getToken(user.tokenAddress);
+    const tokenData = await getToken(JSON.parse(user?.tokenAddress));
     const tokenPrice = tokenData.price;
 
     const calculateTokenAmount = (usdAmount: number) =>
@@ -121,7 +121,7 @@ export async function POST(
       headers: ACTIONS_CORS_HEADERS,
     });
   }
-  const tokenData = await getToken(user.tokenAddress);
+  const tokenData = await getToken(user?.token.address);
 
   try {
     if (
@@ -164,7 +164,7 @@ export async function POST(
       }
     } else {
       const senderMintAccount = await getAssociatedTokenAddress(
-        new PublicKey(user.tokenAddress),
+        new PublicKey(user.token),
         new PublicKey(account)
       );
 

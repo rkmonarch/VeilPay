@@ -18,6 +18,7 @@ import { useWallet } from "@jup-ag/wallet-adapter";
 import { useState } from "react";
 import updateProfile from "../utils/updateProfile";
 import Spinner from "@/components/Spinner";
+import { toast } from "react-toastify";
 
 export default function Edit() {
   const { publicKey } = useWallet();
@@ -25,16 +26,18 @@ export default function Edit() {
   const [username, setUsername] = useState(profile?.username);
   const { selectedToken, setTokens } = useTokenStore();
   const [isLoading, setIsLoading] = useState(false);
+  const [avatar, setAvatar] = useState(profile?.avatar);
 
   async function editUser() {
     try {
       setIsLoading(true);
-      if (!publicKey || !selectedToken || !username || username?.length < 3)
+      if (!publicKey || !selectedToken || !username || username.length < 3)
         return;
-      const profile = await updateProfile({
+      const profileCreate = await updateProfile({
         address: publicKey.toBase58(),
-        tokenAddress: selectedToken?.address,
+        token: selectedToken,
         username: username,
+        avatar: avatar!,
       });
     } catch (error) {
       console.log(error);
@@ -54,7 +57,8 @@ export default function Edit() {
           <div className="flex items-center justify-center my-4">
             <Avatar className="size-24">
               <AvatarImage
-                src={`https://source.boringavatars.com/beam/120/${username}`}
+                src={profile?.avatar}
+                onError={() => setAvatar(profile?.avatar)}
               />
               <AvatarFallback>
                 {username?.substring(0, 2).toUpperCase()}
