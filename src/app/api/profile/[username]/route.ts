@@ -19,6 +19,16 @@ import {
   createTransferInstruction,
   getAssociatedTokenAddress,
 } from "@solana/spl-token";
+import { Prisma } from "@prisma/client";
+
+type User = {
+  id: string;
+  address: string;
+  token: Prisma.JsonValue;
+  created_at: Date;
+  username: string;
+  avatar: string;
+};
 
 export const GET = async (
   req: Request,
@@ -26,7 +36,7 @@ export const GET = async (
 ) => {
   const url = new URL(req.url);
   const username = params.username;
-  const user = await prisma.user.findUnique({
+  const user: User | null = await prisma.user.findUnique({
     where: { username },
   });
 
@@ -36,7 +46,9 @@ export const GET = async (
       headers: ACTIONS_CORS_HEADERS,
     });
   } else {
-    const tokenData = await getToken(JSON.parse(user?.tokenAddress));
+    const tokenAddress = (user.token as { address: string })?.address;
+
+    const tokenData = await getToken(tokenAddress);
     const tokenPrice = tokenData.price;
 
     const calculateTokenAmount = (usdAmount: number) =>
@@ -109,6 +121,7 @@ export async function POST(
       headers: ACTIONS_CORS_HEADERS,
     });
   }
+  const tokenAddress = (user.token as { address: string })?.address;
   const body: ActionPostRequest = await req.json();
 
   let account: PublicKey;
@@ -121,12 +134,12 @@ export async function POST(
       headers: ACTIONS_CORS_HEADERS,
     });
   }
-  const tokenData = await getToken(user?.token.address);
+  const tokenData = await getToken(tokenAddress);
 
   try {
     if (
-      user.tokenAddress === "11111111111111111111111111111111" ||
-      user.tokenAddress === "So11111111111111111111111111111111111111112"
+      tokenAddress === "11111111111111111111111111111111" ||
+      tokenAddress === "So11111111111111111111111111111111111111112"
     ) {
       try {
         const transaction = new Transaction().add(
@@ -146,7 +159,7 @@ export async function POST(
         const payload: ActionPostResponse = await createPostResponse({
           fields: {
             transaction,
-            message: "Chad devs supports each other",
+            message: `Thanks for supporting ${user.username}`,
           },
         });
         return new Response(JSON.stringify(payload), {
@@ -164,12 +177,12 @@ export async function POST(
       }
     } else {
       const senderMintAccount = await getAssociatedTokenAddress(
-        new PublicKey(user.token),
+        new PublicKey(tokenAddress),
         new PublicKey(account)
       );
 
       const receiverMintAccount = await getAssociatedTokenAddress(
-        new PublicKey(user.tokenAddress),
+        new PublicKey(tokenAddress),
         new PublicKey(user.address)
       );
 
@@ -205,7 +218,7 @@ export async function POST(
       const payload: ActionPostResponse = await createPostResponse({
         fields: {
           transaction: transaction,
-          message: `Thanks for support ${user.username}`,
+          message: `Thanks for supporting ${user.username}`,
         },
       });
 
