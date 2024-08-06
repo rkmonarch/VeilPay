@@ -3,6 +3,8 @@
 import { UnifiedWalletProvider } from "@jup-ag/wallet-adapter";
 import React from "react";
 import Navbar from "./Navbar";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -24,6 +26,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     >
       <Navbar />
       {children}
+      <ToastContainer position="top-right" autoClose={5000} theme="light" />
     </UnifiedWalletProvider>
   );
 }

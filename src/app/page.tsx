@@ -3,7 +3,6 @@
 import OrbitingCircles from "@/components/magicui/orbiting-circles";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
 import GetRadius from "@/utils/getRadius";
-import Image from "next/image";
 
 export default function Home() {
   const { width } = useWindowDimensions();

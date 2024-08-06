@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useProfileStore, useRequestStore, useTokenStore } from "@/store";
 import { useWallet } from "@jup-ag/wallet-adapter";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 export default function Create() {
   const { publicKey } = useWallet();
@@ -17,6 +18,7 @@ export default function Create() {
   const { profile } = useProfileStore();
   const { setAmount, setMessage, amount, message } = useRequestStore();
   const [isLoading, setIsLoading] = useState(false);
+  const [ID, setID] = useState<string | null>(null);
 
   async function handleRequest() {
     try {
@@ -36,8 +38,13 @@ export default function Create() {
         tokenAddress: selectedToken?.address,
         username: profile?.username,
       });
+      if (request.id) {
+        setID(request?.id);
+        toast.success("Request created successfully");
+      }
     } catch (error) {
       console.log(error);
+      toast.error("Failed to create request");
     } finally {
       setIsLoading(false);
     }
@@ -154,21 +161,43 @@ export default function Create() {
                   }}
                 />
               </div>
-              <Button
-                className="mb-8 py-4 px-9 w-full text-white font-semibold border border-indigo-700 rounded-xl shadow-4xl focus:ring focus:ring-indigo-300 bg-indigo-600 hover:bg-indigo-700 transition ease-in-out duration-200"
-                type="button"
-                size={"lg"}
-                disabled={
-                  !publicKey ||
-                  !selectedToken ||
-                  !profile ||
-                  message.length === 0 ||
-                  amount.length === 0
-                }
-                onClick={handleRequest}
-              >
-                {isLoading ? <Spinner /> : "Create"}
-              </Button>
+              {ID ? (
+                <Button
+                  className="mb-8 py-4 px-9 w-full text-white font-semibold border border-indigo-700 rounded-xl shadow-4xl focus:ring focus:ring-indigo-300 bg-indigo-600 hover:bg-indigo-700 transition ease-in-out duration-200"
+                  type="button"
+                  size={"lg"}
+                  disabled={
+                    !publicKey ||
+                    !selectedToken ||
+                    !profile ||
+                    message.length === 0 ||
+                    amount.length === 0
+                  }
+                  onClick={() => {
+                    navigator.clipboard.writeText(ID);
+                    setID(null);
+                    toast.success("Link copied");
+                  }}
+                >
+                  Copy Link
+                </Button>
+              ) : (
+                <Button
+                  className="mb-8 py-4 px-9 w-full text-white font-semibold border border-indigo-700 rounded-xl shadow-4xl focus:ring focus:ring-indigo-300 bg-indigo-600 hover:bg-indigo-700 transition ease-in-out duration-200"
+                  type="button"
+                  size={"lg"}
+                  disabled={
+                    !publicKey ||
+                    !selectedToken ||
+                    !profile ||
+                    message.length === 0 ||
+                    amount.length === 0
+                  }
+                  onClick={handleRequest}
+                >
+                  {isLoading ? <Spinner /> : "Create"}
+                </Button>
+              )}
             </form>
           </div>
         </div>
