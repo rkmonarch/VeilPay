@@ -29,7 +29,7 @@ export default function Requests() {
       {requests && requests.length > 0 && (
         <div className="flex flex-wrap items-center gap-8">
           {requests.map((request) => (
-            <RequestCard request={request} />
+            <RequestCard request={request} key={request.id} />
           ))}
         </div>
       )}
