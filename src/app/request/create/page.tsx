@@ -35,7 +35,7 @@ export default function Create() {
         address: publicKey?.toBase58(),
         amount: amount,
         description: message,
-        tokenAddress: selectedToken?.address,
+        token: selectedToken,
         username: profile?.username,
       });
       if (request.id) {

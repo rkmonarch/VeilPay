@@ -2,8 +2,7 @@ import prisma from "@/app/utils/prisma-client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest, res: NextResponse) {
-  const { amount, tokenAddress, address, description, username } =
-    await req.json();
+  const { amount, token, address, description, username } = await req.json();
 
   const user = await prisma.user.findUnique({
     where: {
@@ -20,13 +19,11 @@ export async function POST(req: NextRequest, res: NextResponse) {
     );
   }
 
-  console.log(amount, tokenAddress, address, description, username)
-
   try {
     const request = await prisma.request.create({
       data: {
         amount: parseFloat(amount),
-        tokenAddress,
+        token,
         address,
         description,
         username,
