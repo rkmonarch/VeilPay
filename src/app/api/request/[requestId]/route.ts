@@ -1,6 +1,7 @@
 import { getToken } from "@/app/utils/getToken";
 import prisma from "@/app/utils/prisma-client";
 import { getWalletBalance } from "@/app/utils/walletbalance";
+import { Prisma } from "@prisma/client";
 import {
   ACTIONS_CORS_HEADERS,
   ActionGetResponse,
@@ -38,7 +39,9 @@ export const GET = async (
       headers: ACTIONS_CORS_HEADERS,
     });
   } else {
-    const tokenData = await getToken(request.tokenAddress);
+    const tokenAddress = (request.token as { address: string })?.address;
+
+    const tokenData = await getToken(tokenAddress);
     const payload: ActionGetResponse = {
       icon: "https://www.veilpay.xyz/veilpay.jpg",
       description: `${request.description}`,
@@ -72,6 +75,8 @@ export async function POST(
       headers: ACTIONS_CORS_HEADERS,
     });
   }
+
+  const tokenAddress = (request.token as { address: string })?.address;
   const body: ActionPostRequest = await req.json();
 
   let account: PublicKey;
@@ -85,10 +90,10 @@ export async function POST(
     });
   }
   const walletbalance = await getWalletBalance(account.toBase58());
-  const tokenData = await getToken(request.tokenAddress);
+  const tokenData = await getToken(tokenAddress);
 
   const tokenBalance = walletbalance.find(
-    (balance: any) => balance.address === request.tokenAddress
+    (balance: any) => balance.address === tokenAddress
   );
 
   if (!tokenBalance) {
@@ -116,8 +121,8 @@ export async function POST(
   }
   try {
     if (
-      request.tokenAddress === "11111111111111111111111111111111" ||
-      request.tokenAddress === "So11111111111111111111111111111111111111112"
+      tokenAddress === "11111111111111111111111111111111" ||
+      tokenAddress === "So11111111111111111111111111111111111111112"
     ) {
       try {
         const transaction = new Transaction().add(
@@ -155,12 +160,12 @@ export async function POST(
       }
     } else {
       const senderMintAccount = await getAssociatedTokenAddress(
-        new PublicKey(request.tokenAddress),
+        new PublicKey(tokenAddress),
         new PublicKey(account)
       );
 
       const receiverMintAccount = await getAssociatedTokenAddress(
-        new PublicKey(request.tokenAddress),
+        new PublicKey(tokenAddress),
         new PublicKey(request.address)
       );
 

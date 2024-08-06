@@ -7,6 +7,9 @@ export async function POST(req: NextRequest) {
     where: {
       username: username,
     },
+    orderBy: {
+      created_at: "desc",
+    },
   });
   if (!requests) {
     return NextResponse.json(

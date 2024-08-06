@@ -9,16 +9,22 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useProfileStore, useRequestStore, useTokenStore } from "@/store";
 import { useWallet } from "@jup-ag/wallet-adapter";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export default function Create() {
   const { publicKey } = useWallet();
-  const { selectedToken } = useTokenStore();
+  const { selectedToken, setSelectedToken } = useTokenStore();
   const { profile } = useProfileStore();
   const { setAmount, setMessage, amount, message } = useRequestStore();
   const [isLoading, setIsLoading] = useState(false);
   const [ID, setID] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!selectedToken) {
+      setSelectedToken(profile?.token!);
+    }
+  }, [profile?.token, selectedToken, setSelectedToken]);
 
   async function handleRequest() {
     try {
