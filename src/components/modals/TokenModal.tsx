@@ -53,7 +53,8 @@ function TokenModal() {
                   src={selectedToken?.logoURI || profile?.token.logoURI}
                 />
                 <AvatarFallback>
-                  {selectedToken?.name || profile?.token.name}
+                  {selectedToken?.name.substring(0, 1) ||
+                    profile?.token.name.substring(0, 1)}
                 </AvatarFallback>
               </Avatar>
               <p className="font-semibold text-sm">

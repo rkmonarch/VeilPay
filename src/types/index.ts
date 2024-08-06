@@ -21,3 +21,14 @@ export interface Profile {
   username: string;
   avatar: string;
 }
+
+export interface Request {
+  id: string
+  address: string
+  username: string
+  amount: number
+  token: JupToken
+  created_at: string
+  updated_at: string
+  description: string
+}

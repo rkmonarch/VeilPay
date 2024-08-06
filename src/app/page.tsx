@@ -10,7 +10,7 @@ export default function Home() {
   if (!width) return;
 
   return (
-    <div className="relative flex min-h-[calc(100vh-72px)] w-full flex-col items-center justify-center overflow-hidden">
+    <div className="container mx-auto relative flex min-h-[calc(100vh-72px)] w-full flex-col items-center justify-center overflow-hidden">
       <div className="flex flex-col">
         <span className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300 bg-clip-text text-center text-4xl sm:text-6xl md:text-7xl font-semibold leading-none text-transparent dark:from-white dark:to-black">
           VEILPAY
