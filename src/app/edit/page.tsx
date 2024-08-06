@@ -33,7 +33,7 @@ export default function Edit() {
       setIsLoading(true);
       if (!publicKey || !selectedToken || !username || username.length < 3)
         return;
-      const profileCreate = await updateProfile({
+      const profileUpdate = await updateProfile({
         address: publicKey.toBase58(),
         token: selectedToken,
         username: username,

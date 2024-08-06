@@ -1,7 +1,7 @@
 import prisma from "@/app/utils/prisma-client";
 
 export async function PUT(req: Request) {
-  const { address, username, avatar, tokenAddress } = await req.json();
+  const { address, username, avatar, token } = await req.json();
   const user = await prisma.user.findUnique({
     where: {
       address: address,
@@ -25,7 +25,7 @@ export async function PUT(req: Request) {
       data: {
         username,
         avatar,
-        tokenAddress,
+        token,
       },
     });
 
