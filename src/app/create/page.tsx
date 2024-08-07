@@ -19,6 +19,7 @@ import { useState } from "react";
 import createProfile from "../utils/createProfile";
 import Spinner from "@/components/Spinner";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export default function Create() {
   const { publicKey } = useWallet();
@@ -27,6 +28,7 @@ export default function Create() {
   const { selectedToken } = useTokenStore();
   const [isLoading, setIsLoading] = useState(false);
   const [avatar, setAvatar] = useState(profile?.avatar);
+  const router = useRouter();
 
   async function createUser() {
     try {
@@ -41,6 +43,9 @@ export default function Create() {
           publicKey?.toBase58(),
         ]}&flip=true`,
       });
+      if (profile) {
+        router.push("/requests");
+      }
     } catch (error) {
       console.log("error");
       toast.error("Failed to create profile, try using a different username");

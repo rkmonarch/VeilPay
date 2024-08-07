@@ -1,4 +1,5 @@
 import { JupToken } from "@/types";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 type createProfileParams = {

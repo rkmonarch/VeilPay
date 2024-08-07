@@ -66,6 +66,14 @@ export default function ConnectButton() {
           >
             Edit profile
           </DropdownMenuItem>
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => {
+              router.push("/requests");
+            }}
+          >
+            Requests
+          </DropdownMenuItem>
           <DropdownMenuItem className="cursor-pointer" onClick={disconnect}>
             Disconnect
           </DropdownMenuItem>

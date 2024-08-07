@@ -19,6 +19,7 @@ import { useState } from "react";
 import updateProfile from "../utils/updateProfile";
 import Spinner from "@/components/Spinner";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export default function Edit() {
   const { publicKey } = useWallet();
@@ -27,6 +28,7 @@ export default function Edit() {
   const { selectedToken, setTokens } = useTokenStore();
   const [isLoading, setIsLoading] = useState(false);
   const [avatar, setAvatar] = useState(profile?.avatar);
+  const router = useRouter();
 
   async function editUser() {
     try {
@@ -39,6 +41,9 @@ export default function Edit() {
         username: username,
         avatar: avatar!,
       });
+      if (profile) {
+        router.push("/requests");
+      }
     } catch (error) {
       console.log(error);
     } finally {

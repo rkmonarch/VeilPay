@@ -19,6 +19,6 @@ export default async function updateProfile(params: updateProfileParams) {
     }),
   });
   const data = await res.json();
-  toast.success("Profile updated successfully");
+  toast.success("Profile updated successfully! Now try to create a request.");
   return data;
 }
