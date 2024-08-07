@@ -22,17 +22,23 @@ import {
   clusterApiUrl,
 } from "@solana/web3.js";
 
-export const GET = async (
-  req: Request,
-  { params }: { params: { requestId: string } }
-) => {
+export const GET = async (req: Request) => {
   const url = new URL(req.url);
-  const requestID = params.requestId;
+  const requestID = url.searchParams.get("id");
+
+  if (!requestID) {
+    return new Response(JSON.stringify({ error: "Request ID is required" }), {
+      status: 400,
+      headers: ACTIONS_CORS_HEADERS,
+    });
+  }
+
   const request = await prisma.request.findUnique({
     where: {
       id: requestID,
     },
   });
+
   if (!request) {
     return new Response(JSON.stringify({ error: "Request Not Found" }), {
       status: 404,
@@ -57,12 +63,18 @@ export const GET = async (
 
 export const OPTIONS = GET;
 
-export async function POST(
-  req: Request,
-  { params }: { params: { requestId: string } }
-) {
+export async function POST(req: Request) {
+  const url = new URL(req.url);
+  const requestID = url.searchParams.get("id");
+
+  if (!requestID) {
+    return new Response(JSON.stringify({ error: "Request ID is required" }), {
+      status: 400,
+      headers: ACTIONS_CORS_HEADERS,
+    });
+  }
+
   const connection = new Connection(clusterApiUrl("mainnet-beta"));
-  const requestID = params.requestId;
   const request = await prisma.request.findUnique({
     where: {
       id: requestID,

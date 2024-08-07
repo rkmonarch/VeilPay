@@ -30,12 +30,17 @@ type User = {
   avatar: string;
 };
 
-export const GET = async (
-  req: Request,
-  { params }: { params: { username: string } }
-) => {
+export const GET = async (req: Request) => {
   const url = new URL(req.url);
-  const username = params.username;
+  const username = url.searchParams.get("username");
+
+  if (!username) {
+    return new Response(JSON.stringify({ error: "Username not provided" }), {
+      status: 400,
+      headers: ACTIONS_CORS_HEADERS,
+    });
+  }
+
   const user: User | null = await prisma.user.findUnique({
     where: { username },
   });
@@ -45,82 +50,86 @@ export const GET = async (
       status: 404,
       headers: ACTIONS_CORS_HEADERS,
     });
-  } else {
-    const tokenAddress = (user.token as { address: string })?.address;
-
-    const tokenData = await getToken(tokenAddress);
-    const tokenPrice = tokenData.price;
-
-    const calculateTokenAmount = (usdAmount: number) =>
-      Math.round(usdAmount / tokenPrice);
-
-    const payload: ActionGetResponse = {
-      icon: "https://www.veilpay.xyz/veilpay.jpg",
-      description: `Support ${user.username} with a ${tokenData.symbol} Coin Donation!
-Join the cause and show your support by sending ${tokenData.symbol} coins to ${user.username}. Every coin counts and helps ${user.username} continue their journey.`,
-      title: `Support ${user.username} with ${tokenData.symbol} Coins`,
-      label: `Send ${tokenData.symbol}`,
-      links: {
-        actions: [
-          {
-            label: `send ${calculateTokenAmount(10)} ${tokenData.symbol}`,
-            href: `${url.origin}${url.pathname}?amount=${calculateTokenAmount(
-              10
-            )}`,
-          },
-          {
-            label: `send ${calculateTokenAmount(50)} ${tokenData.symbol}`,
-            href: `${url.origin}${url.pathname}?amount=${calculateTokenAmount(
-              50
-            )}`,
-          },
-          {
-            label: `send ${calculateTokenAmount(100)} ${tokenData.symbol}`,
-            href: `${url.origin}${url.pathname}?amount=${calculateTokenAmount(
-              100
-            )}`,
-          },
-          {
-            href: `${url.origin}${url.pathname}?amount={amount}`,
-            label: `send ${tokenData.symbol}`,
-            parameters: [
-              {
-                name: "amount",
-                label: "Enter a custom amount",
-              },
-            ],
-          },
-        ],
-      },
-    };
-
-    return new Response(JSON.stringify(payload), {
-      headers: ACTIONS_CORS_HEADERS,
-    });
   }
+
+  const tokenAddress = (user.token as { address: string })?.address;
+  const tokenData = await getToken(tokenAddress);
+  const tokenPrice = tokenData.price;
+
+  const calculateTokenAmount = (usdAmount: number) =>
+    Math.round(usdAmount / tokenPrice);
+
+  const payload: ActionGetResponse = {
+    icon: "https://www.veilpay.xyz/veilpay.jpg",
+    description: `Support ${user.username} with a ${tokenData.symbol} Coin Donation!
+Join the cause and show your support by sending ${tokenData.symbol} coins to ${user.username}. Every coin counts and helps ${user.username} continue their journey.`,
+    title: `Support ${user.username} with ${tokenData.symbol} Coins`,
+    label: `Send ${tokenData.symbol}`,
+    links: {
+      actions: [
+        {
+          label: `send ${calculateTokenAmount(10)} ${tokenData.symbol}`,
+          href: `${url.origin}${url.pathname}?amount=${calculateTokenAmount(
+            10
+          )}&username=${username}`,
+        },
+        {
+          label: `send ${calculateTokenAmount(50)} ${tokenData.symbol}`,
+          href: `${url.origin}${url.pathname}?amount=${calculateTokenAmount(
+            50
+          )}&username=${username}`,
+        },
+        {
+          label: `send ${calculateTokenAmount(100)} ${tokenData.symbol}`,
+          href: `${url.origin}${url.pathname}?amount=${calculateTokenAmount(
+            100
+          )}&username=${username}`,
+        },
+        {
+          href: `${url.origin}${url.pathname}?amount={amount}&username=${username}`,
+          label: `send ${tokenData.symbol}`,
+          parameters: [
+            {
+              name: "amount",
+              label: "Enter a custom amount",
+            },
+          ],
+        },
+      ],
+    },
+  };
+
+  return new Response(JSON.stringify(payload), {
+    headers: ACTIONS_CORS_HEADERS,
+  });
 };
 
 export const OPTIONS = GET;
 
-export async function POST(
-  req: Request,
-  { params }: { params: { username: string } }
-) {
+export async function POST(req: Request) {
   const connection = new Connection(clusterApiUrl("mainnet-beta"));
   const url = new URL(req.url);
   const amount = Number(url.searchParams.get("amount")) || 0;
-  const username = params.username;
+  const username = url.searchParams.get("username");
+
+  if (!username) {
+    return new Response(JSON.stringify({ error: "Username not provided" }), {
+      status: 400,
+      headers: ACTIONS_CORS_HEADERS,
+    });
+  }
+
   const user = await prisma.user.findUnique({
-    where: {
-      username: username,
-    },
+    where: { username },
   });
+
   if (!user) {
     return new Response(JSON.stringify({ error: "User not found" }), {
       status: 404,
       headers: ACTIONS_CORS_HEADERS,
     });
   }
+
   const tokenAddress = (user.token as { address: string })?.address;
   const body: ActionPostRequest = await req.json();
 
@@ -129,11 +138,12 @@ export async function POST(
   try {
     account = new PublicKey(body.account);
   } catch (err) {
-    return new Response("invalid account provided", {
+    return new Response("Invalid account provided", {
       status: 400,
       headers: ACTIONS_CORS_HEADERS,
     });
   }
+
   const tokenData = await getToken(tokenAddress);
 
   try {
@@ -144,29 +154,31 @@ export async function POST(
       try {
         const transaction = new Transaction().add(
           SystemProgram.transfer({
-            fromPubkey: new PublicKey(account),
+            fromPubkey: account,
             toPubkey: new PublicKey(user.address),
             lamports: amount * LAMPORTS_PER_SOL,
           })
         );
-        transaction.feePayer = new PublicKey(account);
+        transaction.feePayer = account;
         transaction.recentBlockhash = (
           await connection.getLatestBlockhash()
         ).blockhash;
-        transaction!.lastValidBlockHeight = (
+        transaction.lastValidBlockHeight = (
           await connection.getLatestBlockhash()
         ).lastValidBlockHeight;
+
         const payload: ActionPostResponse = await createPostResponse({
           fields: {
             transaction,
             message: `Thanks for supporting ${user.username}`,
           },
         });
+
         return new Response(JSON.stringify(payload), {
           headers: ACTIONS_CORS_HEADERS,
         });
       } catch (error) {
-        console.error("Error fetching user:", error);
+        console.error("Error preparing transaction:", error);
         return new Response(
           JSON.stringify({ error: "Internal Server Error" }),
           {
@@ -178,7 +190,7 @@ export async function POST(
     } else {
       const senderMintAccount = await getAssociatedTokenAddress(
         new PublicKey(tokenAddress),
-        new PublicKey(account)
+        account
       );
 
       const receiverMintAccount = await getAssociatedTokenAddress(
@@ -200,24 +212,24 @@ export async function POST(
 
       const transaction = new Transaction().add(
         createTransferInstruction(
-          new PublicKey(senderMintAccount),
-          new PublicKey(receiverMintAccount),
+          senderMintAccount,
+          receiverMintAccount,
           account,
           amount * 10 ** tokenData.decimals
         )
       );
 
-      transaction.feePayer = new PublicKey(account);
+      transaction.feePayer = account;
       transaction.recentBlockhash = (
         await connection.getLatestBlockhash()
       ).blockhash;
-      transaction!.lastValidBlockHeight = (
+      transaction.lastValidBlockHeight = (
         await connection.getLatestBlockhash()
       ).lastValidBlockHeight;
 
       const payload: ActionPostResponse = await createPostResponse({
         fields: {
-          transaction: transaction,
+          transaction,
           message: `Thanks for supporting ${user.username}`,
         },
       });
@@ -227,7 +239,7 @@ export async function POST(
       });
     }
   } catch (error) {
-    console.error("Error fetching tx:", error);
+    console.error("Error preparing transaction:", error);
     return new Response(JSON.stringify({ error: "Internal Server Error" }), {
       status: 500,
       headers: ACTIONS_CORS_HEADERS,
