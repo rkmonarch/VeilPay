@@ -9,7 +9,7 @@ export const GET = async () => {
         apiPath: "/api/profile",
       },
       {
-        pathPattern: "/request",
+        pathPattern: "/requests",
         apiPath: "/api/request",
       },
     ],
