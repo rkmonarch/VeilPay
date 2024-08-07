@@ -5,12 +5,12 @@ export const GET = async () => {
     rules: [
       // map all root level routes to an action
       {
-        pathPattern: "/*",
-        apiPath: "/api/profile/*",
+        pathPattern: "/**",
+        apiPath: "/api/profile/**",
       },
       {
-        pathPattern: "/request/*",
-        apiPath: "/api/request/*",
+        pathPattern: "/request/**",
+        apiPath: "/api/request/**",
       },
     ],
   };
