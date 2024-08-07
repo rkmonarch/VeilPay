@@ -10,16 +10,6 @@ import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { PlusCircle, Loader2 } from "lucide-react";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "VeilPay",
-  description:
-    "VeilPay is a secure and private payment platform that allows users to receive and make donations in various cryptocurrencies. It provides a seamless way to support causes and individuals with the coin of your choice, ensuring confidentiality and ease of use.",
-  openGraph: {
-    images: "https://www.veilpay.xyz/veilpay.jpg",
-  },
-};
 
 export default function Requests() {
   const { profile } = useProfileStore();
