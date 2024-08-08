@@ -19,10 +19,10 @@ export default async function createProfile(params: createProfileParams) {
       token: params.token,
     }),
   });
-  console.log(res.status);
-  if (res.status !== 200) {
+
+  if (res.status === 400) {
     console.log("error");
-    toast.error("Failed to create profile");
+    toast.error("This username is already taken, please try another one");
     return;
   }
 

@@ -48,7 +48,6 @@ export default function Create() {
       }
     } catch (error) {
       console.log("error");
-      toast.error("Failed to create profile, try using a different username");
     } finally {
       setIsLoading(false);
     }
