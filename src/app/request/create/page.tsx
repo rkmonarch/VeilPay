@@ -72,52 +72,6 @@ export default function Create() {
                   <h2 className="my-32 text-6xl md:text-7xl font-bold font-heading tracking-px-n leading-tight">
                     Create a request & get started.
                   </h2>
-                  <h3 className="mb-9 text-xl font-bold font-heading leading-normal">
-                    Why should you join us?
-                  </h3>
-                  <ul className="md:max-w-xs">
-                    <li className="mb-5 flex flex-wrap">
-                      <svg
-                        className="mr-2"
-                        width="25"
-                        height="26"
-                        viewBox="0 0 25 26"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          clip-rule="evenodd"
-                          d="M12.5 23C18.0228 23 22.5 18.5228 22.5 13C22.5 7.47715 18.0228 3 12.5 3C6.97715 3 2.5 7.47715 2.5 13C2.5 18.5228 6.97715 23 12.5 23ZM17.1339 11.3839C17.622 10.8957 17.622 10.1043 17.1339 9.61612C16.6457 9.12796 15.8543 9.12796 15.3661 9.61612L11.25 13.7322L9.63388 12.1161C9.14573 11.628 8.35427 11.628 7.86612 12.1161C7.37796 12.6043 7.37796 13.3957 7.86612 13.8839L10.3661 16.3839C10.8543 16.872 11.6457 16.872 12.1339 16.3839L17.1339 11.3839Z"
-                          fill="#4F46E5"
-                        ></path>
-                      </svg>
-                      <span className="flex-1 font-medium leading-relaxed">
-                        The best you can do in no time at all, amazing feature
-                        goes here
-                      </span>
-                    </li>
-                    <li className="mb-5 flex flex-wrap">
-                      <svg
-                        className="mr-2"
-                        width="25"
-                        height="26"
-                        viewBox="0 0 25 26"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          clip-rule="evenodd"
-                          d="M12.5 23C18.0228 23 22.5 18.5228 22.5 13C22.5 7.47715 18.0228 3 12.5 3C6.97715 3 2.5 7.47715 2.5 13C2.5 18.5228 6.97715 23 12.5 23ZM17.1339 11.3839C17.622 10.8957 17.622 10.1043 17.1339 9.61612C16.6457 9.12796 15.8543 9.12796 15.3661 9.61612L11.25 13.7322L9.63388 12.1161C9.14573 11.628 8.35427 11.628 7.86612 12.1161C7.37796 12.6043 7.37796 13.3957 7.86612 13.8839L10.3661 16.3839C10.8543 16.872 11.6457 16.872 12.1339 16.3839L17.1339 11.3839Z"
-                          fill="#4F46E5"
-                        ></path>
-                      </svg>
-                      <span className="flex-1 font-medium leading-relaxed">
-                        24/7 Support of our dedicated, highly professional team
-                      </span>
-                    </li>
-                  </ul>
                 </div>
               </div>
             </div>

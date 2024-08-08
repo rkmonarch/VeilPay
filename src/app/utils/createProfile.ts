@@ -27,6 +27,9 @@ export default async function createProfile(params: createProfileParams) {
   }
 
   const data = await res.json();
-  toast.success("Profile created successfully");
+  navigator.clipboard.writeText(
+    `https://www.veilpay.xyz/?user=${data.username}`
+  );
+  toast.success("Profile created successfully and copied to clipboard");
   return data;
 }
