@@ -51,7 +51,7 @@ export default function Create() {
   }
 
   return (
-    <section className="flex items-center justify-center min-h-[calc(100vh-72px)]">
+    <section className="flex items-center justify-center min-h-[calc(100vh-80px)]">
       <Card className="w-[400px]">
         <CardHeader>
           <CardTitle>Create profile</CardTitle>

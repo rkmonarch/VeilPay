@@ -57,7 +57,7 @@ export default function Create() {
   }
 
   return (
-    <section className="relative bg-white overflow-hidden min-h-[calc(100vh-72px)]">
+    <section className="relative bg-white overflow-hidden min-h-[calc(100vh-80px)]">
       <img
         className="absolute left-0 bottom-0"
         src="https://shuffle.dev/flaro-assets/images/sign-up/gradient.svg"
