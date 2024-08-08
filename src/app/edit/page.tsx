@@ -41,9 +41,6 @@ export default function Edit() {
         username: username,
         avatar: avatar!,
       });
-      if (profile) {
-        router.push("/requests");
-      }
     } catch (error) {
       console.log(error);
     } finally {

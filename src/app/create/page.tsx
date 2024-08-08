@@ -43,9 +43,6 @@ export default function Create() {
           publicKey?.toBase58(),
         ]}&flip=true`,
       });
-      if (profile) {
-        router.push("/requests");
-      }
     } catch (error) {
       console.log("error");
     } finally {
